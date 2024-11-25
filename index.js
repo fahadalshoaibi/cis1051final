@@ -2,13 +2,22 @@ const express = require('express')
 const app = express()
 const mongoose = require('mongoose');
 const Product = require('./models/product.model.js');
-const productRoute = require('./paths/product.route.js');
+const productRoute = require('./routes/product.route.js');
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/api/products", productRoute)
 //get all products
 
+app.use((err, req, res, next) => {
+    if (err instanceof multer.MulterError) {
+        // A Multer error occurred during the upload
+        res.status(400).json({ message: err.message });
+    } else if (err) {
+        // An unknown error occurred
+        res.status(500).json({ message: err.message });
+    }
+});
 
 app.get('/', (req,res) => {
     res.send("from node")
