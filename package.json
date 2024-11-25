@@ -1,6 +1,7 @@
 {
   "name": "appsimple",
   "version": "1.0.0",
+  "description": "Express, MongoDB, and Node.js Restful CRUD API with Node.js",
   "main": "index.js",
   "scripts": {
     "test": "jest",
@@ -11,9 +12,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "mongodb": "^6.10.0",
-    "mongoose": "^8.8.1"
+    "mongoose": "^8.8.2"
   },
   "devDependencies": {
     "jest": "^29.7.0",

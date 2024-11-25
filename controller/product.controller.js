@@ -1,5 +1,6 @@
 const Product = require('../models/product.model');
 const mongoose = require('mongoose');
+const { classifyImage } = require('../services/tensorflow.service');
 
 const ProductSchema = mongoose.Schema({
     name: {
@@ -37,7 +38,6 @@ const ProductSchema = mongoose.Schema({
     timestamps: true
 });
 
-const Product = mongoose.model('Product', ProductSchema);
 
 const recognizeProduct = async (req, res) => {
     try {

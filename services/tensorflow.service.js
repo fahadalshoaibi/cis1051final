@@ -1,5 +1,9 @@
 const tf = require('@tensorflow/tfjs-node');
-const labels = require('./imagenet_classes.json'); // Pre-downloaded labels file
+const labels = Object.keys(require('./imagenet_class_index.json')).reduce((acc, key) => {
+    acc[key] = require('./imagenet_class_index.json')[key][1]; // Extract the label (2nd element of the array)
+    return acc;
+}, {});
+
 
 let model;
 
