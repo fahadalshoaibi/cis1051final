@@ -9,6 +9,7 @@ const {
     updateProduct,
     deleteProduct,
     recognizeProduct,
+    searchProducts,
 } = require('../controller/product.controller.js');
 
 // Middleware for validating product data
@@ -42,6 +43,9 @@ router.get('/:id', getProduct);
 
 // Create a new product
 router.post('/', validateProduct, createProduct);
+
+// Search for products 
+router.get('/search', searchProducts);
 
 // Classify a single uploaded image
 router.post(

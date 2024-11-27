@@ -146,6 +146,32 @@ const deleteProduct = async (req, res) => {try {
     res.status(500).json({ message: error.message });
 }
 };
+const searchProducts = async (req, res) => {
+    try {
+        const { query } = req.query;
+
+        if (!query) {
+            return res.status(400).json({ message: "Search query is required" });
+        }
+
+        const products = await Product.find({
+            $or: [
+                { name: { $regex: query, $options: 'i' } },        // Case-insensitive match for name
+                { description: { $regex: query, $options: 'i' } }, // Case-insensitive match for description
+                { reviews: { $regex: query, $options: 'i' } },     // Case-insensitive match for reviews
+            ],
+        });
+
+        if (products.length === 0) {
+            return res.status(404).json({ message: "No products found matching the search query." });
+        }
+
+        res.status(200).json(products);
+    } catch (error) {
+        res.status(500).json({ message: `Failed to search products: ${error.message}` });
+    }
+};
+
 
 module.exports = {
     getProducts,
@@ -154,5 +180,6 @@ module.exports = {
     updateProduct, 
     deleteProduct,
     recognizeProduct,
+    searchProducts,
 };
 
