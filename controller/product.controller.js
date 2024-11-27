@@ -24,6 +24,14 @@ const ProductSchema = mongoose.Schema({
         required: [true, "Description is required"], // Required validation
         minlength: [10, "Description must be at least 10 characters long"],
     },
+    ratings: {
+        type: [Number],
+        required: [false, "Ratings are not required"], // Optional field },
+    },
+    reviews: {
+        type: [String],
+        required: [false, "Reviews are not required"], // Optional
+    },
     image: {
         type: String,
         validate: {

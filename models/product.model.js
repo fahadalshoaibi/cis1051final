@@ -8,8 +8,18 @@ const ProductSchema = mongoose.Schema({
         required: [true, "quantity for product is required"],},
     description : {type: String,
         required: [true, "description for product is required"],},
-    image: {type: String,
-        required: [false, "image for product is not required"],},
+    image: {
+        type: String,
+        required: [false, "image for product is not required"],
+    },
+    ratings: {
+        type: [Number],
+        required: [false, "ratings for product is not required"],
+    },
+    reviews: {
+        type: [String],
+        required: [false, "reviews for product is not required"],
+    }
 }, {
     timestamps: true
 });
