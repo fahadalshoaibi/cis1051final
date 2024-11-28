@@ -41,7 +41,16 @@ const ProductSchema = mongoose.Schema({
             },
             message: (props) => `${props.value} is not a valid image URL!`,
         },
+
     },
+    category: {
+        type: String,
+        enum: {
+            values: ['Electronics', 'Toys', 'Food', 'Home', 'Others'],
+            message: "Invalid category",
+        },
+        required: [true, "Category is required"], // Required validation
+    }
 }, {
     timestamps: true
 });
@@ -158,7 +167,8 @@ const searchProducts = async (req, res) => {
             $or: [
                 { name: { $regex: query, $options: 'i' } },        // Case-insensitive match for name
                 { description: { $regex: query, $options: 'i' } }, // Case-insensitive match for description
-                { reviews: { $regex: query, $options: 'i' } },     // Case-insensitive match for reviews
+                { reviews: { $regex: query, $options: 'i' } }, 
+                {category: {$regex: query, $options: 'i'}}    // Case-insensitive match for reviews
             ],
         });
 
