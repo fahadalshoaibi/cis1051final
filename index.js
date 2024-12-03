@@ -1,62 +1,40 @@
 require('dotenv').config();
 
-const express = require('express')
-const app = express()
+const express = require('express');
+const app = express();
 const connectDB = require('./config/db.config');
-
-connectDB();
-
-const PORT = process.env.PORT || 4000;
-const mongoose = require('mongoose');
-const Product = require('./models/product.model.js');
+const cors = require('cors');
 const productRoute = require('./routes/product.route.js');
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+// Database Connection
+connectDB();
+
+// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cors({
+  origin: ['http://localhost:5173'],
+  credentials: true
+}));
 
-app.use("/api/products", productRoute)
-//get all products
+// Routes
+app.use('/api/products', productRoute);
 
+app.get('/', (req, res) => {
+  res.send("Welcome to the backend");
+});
+
+// Error Handling Middleware
 app.use((err, req, res, next) => {
-    if (err instanceof multer.MulterError) {
-        // A Multer error occurred during the upload
-        res.status(400).json({ message: err.message });
-    } else if (err) {
-        // An unknown error occurred
-        res.status(500).json({ message: err.message });
-    }
+  if (err instanceof multer.MulterError) {
+    res.status(400).json({ message: err.message });
+  } else if (err) {
+    res.status(500).json({ message: err.message });
+  }
 });
 
-app.get('/', (req,res) => {
-    res.send("from node")
-}
-);
-//get product by id
-
-app.post('/api/products', async (req,res) => {
-   try{
-    const product = await Product.create(req.body);
-    res.status(200).json(product);
-   
-   }catch(error){
-         res.status(500).json({message: error.message})
-    }   
+// Start the Server
+const PORT = process.env.PORT || 5173;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
-//update product by id
-
-//delete product by id
-
-mongoose.connect("mongodb+srv://fahad20032012:smartbird@products.hvj8k.mongodb.net/shop?retryWrites=true&w=majority&appName=products")
-    .then(()=> {
-        console.log("connected succesfully");
-        app.listen(3000, ()=>{
-            console.log('server is on port 4000')
-        });
-    })
-    .catch(()=> {
-        console.log("connection failed successfully")
-
-    });
