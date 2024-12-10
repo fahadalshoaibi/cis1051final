@@ -4,10 +4,15 @@ const express = require('express');
 const app = express();
 const connectDB = require('./config/db.config.js');
 const cors = require('cors');
+const multer = require('multer');
 const productRoute = require('./routes/product.route.js');
 
+const upload = multer({ storage: multer.memoryStorage() });
+const imageRoutes = require('./routes/imageRoutes');
+const detectRoutes = require('./routes/detectRoutes');
+
 // Database Connection
-connectDB();
+//connectDB();
 
 // Middleware
 app.use(express.json());
@@ -19,10 +24,16 @@ app.use(cors({
 
 // Routes
 app.use('/api/products', productRoute);
+app.use('/api/images', imageRoutes);
+app.use('/api/detect', detectRoutes);
 
 app.get('/', (req, res) => {
   res.send("Welcome to the backend");
 });
+
+// Image and Object Recognition
+app.post('api/classify', upload.single)
+app.post('api/detect', upload.single)
 
 // Error Handling Middleware
 app.use((err, req, res, next) => {
